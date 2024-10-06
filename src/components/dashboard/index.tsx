@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React from 'react';
 import PrimaryTab from './PrimaryTab';
 
 const Dashboard: React.FC = () => {

@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import { MyFinContent } from "./myFin";
+import { TrackContent } from "./Track";
 
 const PrimaryTab: React.FC = () => {
   type tabType = "myFin" | "track" | "threads";
@@ -43,7 +45,7 @@ const PrimaryTab: React.FC = () => {
                 : "bg-gray-300 text-gray-700 hover:bg-gray-400"
             }`}
           >
-            My Fin
+            {tab.label}
           </button>
         ))}
       </div>
@@ -55,26 +57,6 @@ const PrimaryTab: React.FC = () => {
     </div>
   );
 };
-
-const MyFinContent: React.FC = () => (
-  <div>
-    <h2 className="text-2xl font-semibold mb-4 text-gray-800">My Fin</h2>
-    <p className="text-gray-600">
-      This is your personal finance overview section where you can manage your
-      financial goals, funds, and spending.
-    </p>
-  </div>
-);
-
-const TrackContent: React.FC = () => (
-  <div>
-    <h2 className="text-2xl font-semibold mb-4 text-gray-800">Track</h2>
-    <p className="text-gray-600">
-      Track your expenses, monitor savings progress, and get detailed insights
-      into your financial health.
-    </p>
-  </div>
-);
 
 const ThreadsContent: React.FC = () => (
   <div>
