@@ -27,11 +27,6 @@ const Header: React.FC = () => {
               <ul className="hidden md:flex space-x-6">
                 <li>
                   <a href="#" className="hover:text-gray-600 transition-colors">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-gray-600 transition-colors">
                     Dashboard
                   </a>
                 </li>
@@ -87,11 +82,6 @@ const Header: React.FC = () => {
         <div className="md:hidden bg-gradient-to-r from-teal-400 via-blue-300 to-purple-400 text-gray-800 absolute top-16 left-0 w-full shadow-md">
           {loggedInUser ? (
             <ul className="flex flex-col space-y-4 px-6 py-4">
-              <li>
-                <a href="#" className="hover:text-gray-600 transition-colors">
-                  Home
-                </a>
-              </li>
               <li>
                 <a href="#" className="hover:text-gray-600 transition-colors">
                   Dashboard

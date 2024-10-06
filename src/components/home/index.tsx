@@ -13,9 +13,9 @@ const HomePage: React.FC = () => {
           Simplify your financial life with FinHealth. Track your spending,
           manage your funds, and reach your savings goals — all in one place.
         </p>
-        <Link href="/signup">
+        <Link href="/auth?type=signup">
           <span className="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition">
-            Join Now - It’s Free
+            Join Now 
           </span>
         </Link>
       </section>
@@ -70,7 +70,7 @@ const HomePage: React.FC = () => {
         <h3 className="text-xl font-bold text-gray-900 mb-4">
           Start Managing Your Finances Today
         </h3>
-        <Link href="/signup">
+        <Link href="/auth?type=signup">
           <span className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition">
             Get Started
           </span>

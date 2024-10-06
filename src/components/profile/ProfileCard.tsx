@@ -26,7 +26,7 @@ export const ProfileCard: React.FC = () => {
     toast.success("Logging out...");
     dispatch(logout());
     setTimeout(() => {
-      router.push("/auth?type=login");
+      router.push("/");
     }, 500);
   };
 
