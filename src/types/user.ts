@@ -12,7 +12,7 @@ interface IUser {
     isDeleted: boolean;
     isSuspended: boolean;
     password?:string;
-    dob: Date;
+    dob: string;
     email: string | null;
     phone: string | null;
   }

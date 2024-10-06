@@ -2,35 +2,41 @@
 import api from "./apiService";
 import { AppDispatch } from "../redux/store";
 import { removeAuthCookies, setAuthCookies } from "@/utils/cookies";
+import { login } from "@/redux/slices/authSlice";
 
 export const loginService = async (
-  email: string,
+  username: string,
   password: string,
   dispatch: AppDispatch
 ) => {
   try {
-    const response = await api.post("/auth/login", { email, password });
+    const response = await api.post("/auth/login", { username, password });
     const responseData = response?.data?.data;
     if (responseData) {
-      const { accessToken, refreshToken } = responseData;
+      const { accessToken, refreshToken, user } = responseData;
+      console.log(accessToken, refreshToken, user, "login response");
       setAuthCookies(accessToken, refreshToken);
-      return Promise.resolve();
+      dispatch(login(user));
+      return Promise.resolve(`${user.firstName} ${user.lastName}`);
     } else return Promise.reject();
   } catch (error) {
-    console.log(error);
     return Promise.reject(error);
   }
 };
 
 export const signupService = async (
-  fullname: string,
-  email: string,
-  password: string,
+  firstName: string,
+  lastName: string,
+  username: string,
+  dob: string,
+  password: string
 ) => {
   try {
     const response = await api.post("/auth/signup", {
-      fullname,
-      email,
+      firstName,
+      lastName,
+      dob,
+      username,
       password,
     });
     const responseData = response?.data?.data;
@@ -47,12 +53,14 @@ export const logoutService = (dispatch: AppDispatch) => {
   removeAuthCookies();
 };
 
-export const getUserData = async () => {
+export const getUserDataService = async (username:string) => {
   try {
-    const response = await api.get("/user");
-    return response.data;
+    const response = await api.post("/auth/profileInfo",{
+      username
+    });
+    if (response?.data?.data) return Promise.resolve(response?.data?.data);
+    else return Promise.reject();
   } catch (error) {
-    console.error("Fetching user data failed:", error);
-    throw error;
+    return Promise.reject(error);
   }
 };
