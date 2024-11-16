@@ -17,11 +17,13 @@ interface ITransactionListPayload {
   endDate?: string;
   status?: "PENDING" | "COMPLETED" | "FAILED" | "";
   sortBy?: string;
+  transactionType?: "DEBIT" | "CREDIT" | "";
 }
 interface ITransactionFilterPayload {
-    search: string;
-    startDate?: string;
-    endDate?: string;
-    status?: "PENDING" | "COMPLETED" | "FAILED" | "";
-    sortBy?: string;
-  }
+  search: string;
+  startDate?: string;
+  endDate?: string;
+  status?: "PENDING" | "COMPLETED" | "FAILED" | "";
+  sortBy?: string;
+  transactionType?: "DEBIT" | "CREDIT" | "";
+}

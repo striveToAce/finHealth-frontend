@@ -6,21 +6,21 @@ interface TrackCardProps {
   title: string;
   recentActivity: string;
   bgColor: string;
+  cardClick: () => void;
 }
 
 export const TrackCard: React.FC<TrackCardProps> = ({
   title,
   recentActivity,
   bgColor,
+  cardClick
 }) => {
   const router = useRouter();
 
   return (
     <div
       className={`p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform relative overflow-hidden cursor-pointer ${bgColor}`}
-      onClick={() => {
-        router.push(`/dashboard/track?type=${title.toLowerCase()}`);
-      }}
+      onClick={cardClick}
     >
       {/* Glowing Border */}
       <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-pink-500 to-purple-500 opacity-30 blur-lg"></div>

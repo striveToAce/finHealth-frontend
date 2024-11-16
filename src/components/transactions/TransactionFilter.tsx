@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import React, { useState, useEffect, useMemo } from "react";
 
 interface FilterProps {
@@ -11,14 +12,17 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
   onSearch,
   onFilterChange,
 }) => {
+  const searchParams = useSearchParams();
   const [filters, setFilters] = useState<ITransactionFilterPayload>({
-    search: "",
+    search: searchParams.get("search") || "",
     startDate: "",
     endDate: "",
-    status: undefined,
+    status:
+      (searchParams.get("status") as "PENDING" | "COMPLETED" | "FAILED") || "",
     sortBy: "",
+    transactionType:
+      (searchParams.get("transactionType") as "DEBIT" | "CREDIT") || "",
   });
-  console.log(filters,"---filters____")
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(
     filters.search
   );
@@ -52,14 +56,14 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
   };
 
   const handleClearFilters = () => {
-    const clearedFilters:ITransactionFilterPayload = {
+    const clearedFilters: ITransactionFilterPayload = {
       search: "",
       startDate: "",
       endDate: "",
       status: "",
+      transactionType: "",
       sortBy: "",
     };
-    console.log(clearedFilters,"__{}{}{}_")
     setFilters(clearedFilters);
     onFilterChange(clearedFilters);
   };
@@ -71,7 +75,8 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
         key === "sortBy" ||
         key === "startDate" ||
         key === "endDate" ||
-        key === "status"
+        key === "status" ||
+        key === "transactionType"
           ? value !== ""
           : value
       ),
@@ -146,11 +151,7 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
                 onChange={(e) =>
                   handleInputChange(
                     "status",
-                    e.target.value as
-                      | "COMPLETED"
-                      | "PENDING"
-                      | "FAILED"
-                      | ""
+                    e.target.value as "COMPLETED" | "PENDING" | "FAILED" | ""
                   )
                 }
               >
@@ -161,7 +162,23 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
               </select>
             </div>
 
-            {/* Sort by Options */}
+            {/* transaction type */}
+            <div>
+              <label className="block mb-1 text-gray-400">
+                Transaction type
+              </label>
+              <select
+                className="w-full px-3 py-2 rounded-md bg-gray-800 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                value={filters.transactionType}
+                onChange={(e) =>
+                  handleInputChange("transactionType", e.target.value)
+                }
+              >
+                <option value="">All</option>
+                <option value="CREDIT">CREDIT</option>
+                <option value="DEBIT">DEBIT</option>
+              </select>
+            </div>
             <div>
               <label className="block mb-1 text-gray-400">Sort by</label>
               <select
