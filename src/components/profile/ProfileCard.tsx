@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { logout } from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
@@ -12,6 +13,7 @@ import Avatar from "../common/Avatar";
 export const ProfileCard: React.FC = () => {
   const searchParams = useSearchParams();
   const username = searchParams.get("username");
+
   // Fetch the logged-in user from Redux store
   const { loggedInUser } = useSelector((state: RootState) => state.auth);
   const [loader, setLoader] = useState<boolean>(true);
@@ -34,46 +36,56 @@ export const ProfileCard: React.FC = () => {
     if (!loggedInUser?.username) return;
     try {
       setLoader(true);
-      toast.loading("fetching profile...");
+      toast.loading("Fetching profile...");
       const user = await getUserDataService(
         username || loggedInUser?.username || ""
       );
       toast.dismiss();
-      toast.success("fetched profile :)");
+      toast.success("Fetched profile :)");
       setUserProfile(user);
     } catch (err) {
       toast.dismiss();
-      console.log(err);
-      toast.error("something went wrong :)");
+      console.error(err);
+      toast.error("Something went wrong :(");
     } finally {
       setLoader(false);
     }
   };
+
   useEffect(() => {
     getUserProfile();
   }, [loggedInUser?.username]);
 
   return !loader && userProfile?.id ? (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center">Profile</h2>
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-purple-900 via-black to-blue-900 text-white">
+      <div className="bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full">
+        <h2 className="text-3xl font-extrabold mb-6 text-center text-glow">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500">
+            Profile
+          </span>
+        </h2>
 
-        <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
+        <div className="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-700 p-6 rounded-lg shadow-lg">
           <div className="flex flex-col items-center space-y-4">
+            {/* Avatar */}
             <Avatar
               firstName={userProfile.firstName}
               lastName={userProfile.lastName}
             />
-            <h3 className="text-xl font-semibold">
+
+            {/* Name */}
+            <h3 className="text-xl font-semibold text-gray-200">
               {userProfile?.firstName} {userProfile?.lastName}
             </h3>
-            <p className="text-gray-600">Username: {userProfile?.username}</p>
 
-            {/* Show logout button if it's their own profile */}
+            {/* Username */}
+            <p className="text-gray-400">Username: {userProfile?.username}</p>
+
+            {/* Logout Button */}
             {isSelf && (
               <button
                 onClick={handleLogout}
-                className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition"
+                className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-transform transform hover:scale-105 shadow-md"
               >
                 Logout
               </button>

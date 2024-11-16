@@ -21,6 +21,7 @@ const signupSchema = Yup.object().shape({
 
 const Signup: React.FC = () => {
   const router = useRouter();
+
   const handleSignup = async (values: {
     firstName: string;
     lastName: string;
@@ -47,10 +48,12 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Sign Up for FinHealth
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-purple-900 via-black to-blue-900 text-white">
+      <div className="bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full">
+        <h2 className="text-3xl font-extrabold mb-6 text-center text-glow">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500">
+            Sign Up for FinHealth
+          </span>
         </h2>
         <Formik
           initialValues={{
@@ -58,107 +61,121 @@ const Signup: React.FC = () => {
             lastName: "",
             username: "",
             password: "",
-            dob: moment().format(),
+            dob: moment().format("YYYY-MM-DD"),
           }}
           validationSchema={signupSchema}
           onSubmit={handleSignup}
         >
           {({ isSubmitting }) => (
             <Form>
+              {/* First Name */}
               <div className="mb-4">
-                <label htmlFor="firstName" className="block text-gray-700">
+                <label htmlFor="firstName" className="block text-gray-400 mb-1">
                   First Name
                 </label>
                 <Field
                   id="firstName"
                   name="firstName"
                   type="text"
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <ErrorMessage
                   name="firstName"
                   component="div"
-                  className="text-red-500"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
+
+              {/* Last Name */}
               <div className="mb-4">
-                <label htmlFor="lastName" className="block text-gray-700">
+                <label htmlFor="lastName" className="block text-gray-400 mb-1">
                   Last Name
                 </label>
                 <Field
                   id="lastName"
                   name="lastName"
                   type="text"
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <ErrorMessage
                   name="lastName"
                   component="div"
-                  className="text-red-500"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
+
+              {/* Username */}
               <div className="mb-4">
-                <label htmlFor="username" className="block text-gray-700">
+                <label htmlFor="username" className="block text-gray-400 mb-1">
                   User ID
                 </label>
                 <Field
                   id="username"
                   name="username"
                   type="text"
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <ErrorMessage
                   name="username"
                   component="div"
-                  className="text-red-500"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
+
+              {/* Date of Birth */}
               <div className="mb-4">
-                <label htmlFor="dob" className="block text-gray-700">
+                <label htmlFor="dob" className="block text-gray-400 mb-1">
                   Date of Birth
                 </label>
                 <Field
                   id="dob"
                   name="dob"
                   type="date"
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <ErrorMessage
                   name="dob"
                   component="div"
-                  className="text-red-500"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="block text-gray-700">
+
+              {/* Password */}
+              <div className="mb-6">
+                <label htmlFor="password" className="block text-gray-400 mb-1">
                   Password
                 </label>
                 <Field
                   id="password"
                   name="password"
                   type="password"
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="w-full px-4 py-2 rounded-md bg-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
                 <ErrorMessage
                   name="password"
                   component="div"
-                  className="text-red-500"
+                  className="text-red-500 text-sm mt-1"
                 />
               </div>
+
+              {/* Sign Up Button */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                className="w-full py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold hover:from-cyan-600 hover:to-blue-600 transition-transform transform hover:scale-105 shadow-md"
               >
                 {isSubmitting ? "Signing up..." : "Sign Up"}
               </button>
             </Form>
           )}
         </Formik>
-        <p className="text-center mt-4">
+
+        <p className="text-center mt-6">
           Already have an account?{" "}
           <Link href="/auth?type=login">
-            <span className="text-blue-600 hover:underline">Login</span>
+            <span className="text-cyan-400 hover:underline cursor-pointer">
+              Login
+            </span>
           </Link>
         </p>
       </div>
