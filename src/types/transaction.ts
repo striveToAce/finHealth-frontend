@@ -10,9 +10,18 @@ interface TransactionFormValues {
 }
 
 interface ITransactionListPayload {
+  search: string;
   page: number;
   pageSize: number;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   status?: "PENDING" | "COMPLETED" | "FAILED";
+  sortBy?: string;
 }
+interface ITransactionFilterPayload {
+    search: string;
+    startDate?: string;
+    endDate?: string;
+    status?: "PENDING" | "COMPLETED" | "FAILED";
+    sortBy?: string;
+  }

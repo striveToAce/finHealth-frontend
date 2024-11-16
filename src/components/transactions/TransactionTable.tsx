@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
 import { CustomModal } from "../common/CustomModal";
+import TransactionFilterComponent from "./TransactionFilter";
 
 interface Transaction {
   id: string;
@@ -30,6 +31,7 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
   const [filter, setFilter] = useState<ITransactionListPayload>({
     page: 1,
     pageSize: 50,
+    search: "",
   });
 
   const fetchTransactions = useCallback(async () => {
@@ -63,7 +65,20 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
 
   useEffect(() => {
     fetchTransactions();
-  }, [filter.page]);
+  }, [JSON.stringify(filter)]);
+
+  const handleFilterChange = useCallback((value: ITransactionFilterPayload) => {
+    if (!value.startDate) delete value.startDate;
+    if (!value.endDate) delete value.endDate;
+    if (!value.status) delete value.status;
+    setFilter((prev) => ({ ...prev, ...value }));
+  }, []);
+
+  const handleSearchTextChange = useCallback((value: string) => {
+    setFilter((prev) => {
+      return { ...prev, search: value };
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-900 via-black to-blue-900 p-8 text-white">
@@ -83,6 +98,12 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
         >
           + Add Transaction
         </button>
+      </div>
+      <div>
+        <TransactionFilterComponent
+          onFilterChange={handleFilterChange}
+          onSearch={handleSearchTextChange}
+        />
       </div>
 
       <div className="overflow-x-auto rounded-lg shadow-lg">
