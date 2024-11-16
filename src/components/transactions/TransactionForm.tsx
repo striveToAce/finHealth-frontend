@@ -1,18 +1,10 @@
 "use client";
+import { makeTransactionService } from "@/services/transactionService";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { toast } from "react-toastify";
 
-interface TransactionFormValues {
-  id?: string;
-  title: string;
-  description?: string;
-  amount: number;
-  isCredit: boolean;
-  label: string;
-  status: "PENDING" | "COMPLETED" | "FAILED";
-  reason?: string;
-}
-
-const TransactionForm = () => {
+type IPropType = { setMode: React.Dispatch<React.SetStateAction<string>> };
+const TransactionForm: React.FC<IPropType> = ({ setMode }) => {
   const initialValues: TransactionFormValues = {
     id: "",
     title: "",
@@ -24,16 +16,40 @@ const TransactionForm = () => {
     reason: "",
   };
 
-  const handleSubmit = (values: TransactionFormValues) => {
-    console.log("Form Submitted:", values);
+  const handleSubmit = async (values: TransactionFormValues) => {
+    try {
+      if (!values.id) delete values.id;
+      toast.loading("creating transaction...");
+      const response = await makeTransactionService(values);
+      toast.dismiss();
+      toast.success(response);
+      setMode("list")
+    } catch (err) {
+      toast.dismiss();
+      toast.error("transaction creation failed.");
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-black to-gray-900 p-4">
       <div className="max-w-xl w-full p-6 bg-black/80 border border-purple-700 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-extrabold text-purple-400 mb-6 text-center animate-pulse">
-          Create Transaction
-        </h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-extrabold text-glow">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">
+              Create Transaction
+            </span>
+          </h1>
+
+          {/* Add Transaction Button */}
+          <button
+            onClick={() => {
+              setMode("list");
+            }}
+            className="px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-white text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-transform transform hover:scale-105 shadow-lg"
+          >
+            🔙 Back to view
+          </button>
+        </div>
         <Formik
           initialValues={initialValues}
           //   validationSchema={transactionValidationSchema}
@@ -41,27 +57,6 @@ const TransactionForm = () => {
         >
           {({ isSubmitting }) => (
             <Form className="space-y-5">
-              {/* ID */}
-              <div>
-                <label
-                  className="block text-sm font-medium text-purple-300"
-                  htmlFor="id"
-                >
-                  ID (optional)
-                </label>
-                <Field
-                  type="text"
-                  name="id"
-                  id="id"
-                  className="mt-1 w-full bg-gray-800 text-purple-200 border border-gray-600 rounded-lg px-4 py-2 focus:ring-purple-500 focus:border-purple-500"
-                />
-                <ErrorMessage
-                  name="id"
-                  component="div"
-                  className="text-red-400 text-sm"
-                />
-              </div>
-
               {/* Title */}
               <div>
                 <label

@@ -1,9 +1,9 @@
-import TransactionForm from "@/components/transactions/TransactionForm";
+import { TransactionView } from "@/components/transactions";
 
 const TransactionPage = () => {
   return (
     <div>
-      <TransactionForm />
+      <TransactionView/>
     </div>
   );
 };
