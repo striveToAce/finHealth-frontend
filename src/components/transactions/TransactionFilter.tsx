@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 interface FilterProps {
   onSearch: (searchTerm: string) => void;
@@ -11,42 +11,70 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
   onSearch,
   onFilterChange,
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [status, setStatus] = useState<
-    "COMPLETED" | "PENDING" | "FAILED" | undefined
-  >();
-  const [sortBy, setSortBy] = useState("");
+  const [filters, setFilters] = useState<ITransactionFilterPayload>({
+    search: "",
+    startDate: "",
+    endDate: "",
+    status: undefined,
+    sortBy: "",
+  });
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(
+    filters.search
+  );
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
-  // Debounce effect for search term
+  // Debounce search term
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
+      setDebouncedSearchTerm(filters.search);
     }, 500);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchTerm]);
+    return () => clearTimeout(handler);
+  }, [filters.search]);
 
+  // Trigger onSearch when debouncedSearchTerm changes
   useEffect(() => {
     if (debouncedSearchTerm) {
       onSearch(debouncedSearchTerm);
     }
   }, [debouncedSearchTerm, onSearch]);
 
-  const handleApplyFilters = () => {
-    onFilterChange({
-      search: debouncedSearchTerm,
-      startDate,
-      endDate,
-      status,
-      sortBy,
-    });
+  const handleInputChange = (
+    key: keyof ITransactionFilterPayload,
+    value: any
+  ) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
   };
+
+  const handleApplyFilters = () => {
+    onFilterChange(filters);
+  };
+
+  const handleClearFilters = () => {
+    const clearedFilters = {
+      search: "",
+      startDate: "",
+      endDate: "",
+      status: undefined,
+      sortBy: "",
+    };
+    setFilters(clearedFilters);
+    onFilterChange(clearedFilters);
+  };
+
+  const isFilterApplied = useMemo(
+    () =>
+      Object.entries(filters).some(([key, value]) =>
+        key === "search" ||
+        key === "sortBy" ||
+        key === "startDate" ||
+        key === "endDate" ||
+        key === "status"
+          ? value !== ""
+          : value
+      ),
+    [filters]
+  );
 
   return (
     <div className="p-6 bg-gradient-to-r from-purple-900 via-black to-blue-900 text-white rounded-lg shadow-lg">
@@ -78,8 +106,8 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
               type="text"
               placeholder="Search by title or description"
               className="flex-1 px-4 py-2 rounded-md bg-gray-800 text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={filters.search}
+              onChange={(e) => handleInputChange("search", e.target.value)}
             />
           </div>
 
@@ -91,8 +119,8 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
               <input
                 type="date"
                 className="w-full px-3 py-2 rounded-md bg-gray-800 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                value={filters.startDate}
+                onChange={(e) => handleInputChange("startDate", e.target.value)}
               />
             </div>
 
@@ -102,8 +130,8 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
               <input
                 type="date"
                 className="w-full px-3 py-2 rounded-md bg-gray-800 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                value={filters.endDate}
+                onChange={(e) => handleInputChange("endDate", e.target.value)}
               />
             </div>
 
@@ -112,9 +140,10 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
               <label className="block mb-1 text-gray-400">Status</label>
               <select
                 className="w-full px-3 py-2 rounded-md bg-gray-800 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                value={status}
+                value={filters.status}
                 onChange={(e) =>
-                  setStatus(
+                  handleInputChange(
+                    "status",
                     e.target.value as
                       | "COMPLETED"
                       | "PENDING"
@@ -123,7 +152,7 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
                   )
                 }
               >
-                <option value="">All</option>
+                <option value={undefined}>All</option>
                 <option value="PENDING">Pending</option>
                 <option value="COMPLETED">Completed</option>
                 <option value="FAILED">Failed</option>
@@ -131,44 +160,44 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
             </div>
 
             {/* Sort by Options */}
-            <div className="sm:col-span-2 lg:col-span-1 flex space-x-4">
-              <div>
-                <label className="block mb-1 text-gray-400">
-                  Sort by Price
-                </label>
-                <select
-                  className="w-full px-3 py-2 rounded-md bg-gray-800 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="">None</option>
-                  <option value="amount-asc">Low to High</option>
-                  <option value="amount-desc">High to Low</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block mb-1 text-gray-400">Sort by Date</label>
-                <select
-                  className="w-full px-3 py-2 rounded-md bg-gray-800 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="">None</option>
-                  <option value="date-asc">Oldest First</option>
-                  <option value="date-desc">Newest First</option>
-                </select>
-              </div>
+            <div>
+              <label className="block mb-1 text-gray-400">Sort by</label>
+              <select
+                className="w-full px-3 py-2 rounded-md bg-gray-800 text-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                value={filters.sortBy}
+                onChange={(e) => handleInputChange("sortBy", e.target.value)}
+              >
+                <option value="">None</option>
+                <option value="amount-asc">Price: Low to High</option>
+                <option value="amount-desc">Price: High to Low</option>
+                <option value="date-asc">Date: Oldest First</option>
+                <option value="date-desc">Date: Newest First</option>
+              </select>
             </div>
           </div>
 
-          {/* Apply Filters Button */}
+          {/* Action Buttons */}
           <div className="flex justify-end mt-4">
             <button
               className="px-6 py-2 rounded-md bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold hover:from-green-600 hover:to-blue-600 transition-transform transform hover:scale-105"
               onClick={handleApplyFilters}
             >
               Apply Filters
+            </button>
+            <button
+              disabled={!isFilterApplied}
+              className={`ml-2 px-6 py-2 rounded-md bg-gradient-to-r ${
+                isFilterApplied
+                  ? "from-red-400 to-red-500"
+                  : "from-gray-600 to-gray-700"
+              } text-white font-semibold ${
+                isFilterApplied
+                  ? "hover:from-red-600 hover:to-red-700"
+                  : "cursor-not-allowed"
+              } transition-transform transform hover:scale-105`}
+              onClick={handleClearFilters}
+            >
+              Clear Filters
             </button>
           </div>
         </div>

@@ -48,7 +48,7 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
       toast.dismiss();
       toast.error("fetching transactions failed.");
     }
-  }, []);
+  }, [JSON.stringify(filter)]);
 
   const handleTransactionClick = useCallback(async (id: string) => {
     try {
@@ -71,6 +71,7 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
     if (!value.startDate) delete value.startDate;
     if (!value.endDate) delete value.endDate;
     if (!value.status) delete value.status;
+    console.log(value,"___filters ____")
     setFilter((prev) => ({ ...prev, ...value }));
   }, []);
 
