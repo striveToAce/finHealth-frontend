@@ -1,4 +1,5 @@
 "use client";
+
 import { RootState } from "@/redux/store";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -17,45 +18,57 @@ const Header: React.FC = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   return (
-    <header className="bg-gradient-to-r from-teal-400 via-blue-300 to-purple-400 text-gray-800 py-4 fixed top-0 w-full z-50 shadow-lg">
+    <header className="bg-gradient-to-r from-purple-700 via-black to-blue-800 text-white py-4 fixed top-0 w-full z-50 shadow-xl">
       <div className="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
-        <h1 className="text-lg sm:text-2xl font-bold">FinHealth</h1>
+        {/* Logo */}
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-glow">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400">
+            FinHealth
+          </span>
+        </h1>
+
         {isClient && (
           <nav>
+            {/* Desktop Menu */}
             {loggedInUser ? (
-              <ul className="hidden md:flex space-x-6">
+              <ul className="hidden md:flex space-x-8">
                 <li>
-                  <a href="#" className="hover:text-gray-600 transition-colors">
+                  <Link
+                    href="/dashboard"
+                    className="text-lg text-white hover:text-neon transition-transform transform hover:scale-105"
+                  >
                     Dashboard
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <Link
                     href="/profile"
-                    className="hover:text-gray-600 transition-colors"
+                    className="text-lg text-white hover:text-neon transition-transform transform hover:scale-105"
                   >
                     Profile
                   </Link>
                 </li>
               </ul>
             ) : (
-              <ul className="hidden md:flex space-x-6">
+              <ul className="hidden md:flex space-x-8">
                 <li>
                   <Link
                     href="/auth?type=login"
-                    className="hover:text-gray-600 transition-colors"
+                    className="text-lg text-white hover:text-neon transition-transform transform hover:scale-105"
                   >
                     Login/Signup
                   </Link>
                 </li>
               </ul>
             )}
-            {/* Hamburger Menu for Mobile */}
+
+            {/* Mobile Hamburger Icon */}
             <div className="md:hidden">
               <button
                 onClick={toggleMenu}
-                className="text-gray-800 focus:outline-none hover:text-gray-600 transition-colors"
+                className="text-white focus:outline-none hover:text-neon transition-transform transform hover:scale-110"
                 aria-label="Toggle Menu"
               >
                 <svg
@@ -77,31 +90,35 @@ const Header: React.FC = () => {
           </nav>
         )}
       </div>
+
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && isClient && (
-        <div className="md:hidden bg-gradient-to-r from-teal-400 via-blue-300 to-purple-400 text-gray-800 absolute top-16 left-0 w-full shadow-md">
+        <div className="md:hidden bg-gradient-to-r from-purple-700 via-black to-blue-800 text-white absolute top-16 left-0 w-full shadow-lg">
           {loggedInUser ? (
-            <ul className="flex flex-col space-y-4 px-6 py-4">
+            <ul className="flex flex-col space-y-6 px-6 py-4">
               <li>
-                <a href="#" className="hover:text-gray-600 transition-colors">
+                <Link
+                  href="/dashboard"
+                  className="text-lg hover:text-neon transition-transform transform hover:scale-105"
+                >
                   Dashboard
-                </a>
+                </Link>
               </li>
               <li>
                 <Link
                   href="/profile"
-                  className="hover:text-gray-600 transition-colors"
+                  className="text-lg hover:text-neon transition-transform transform hover:scale-105"
                 >
                   Profile
                 </Link>
               </li>
             </ul>
           ) : (
-            <ul className="flex flex-col space-y-4 px-6 py-4">
+            <ul className="flex flex-col space-y-6 px-6 py-4">
               <li>
                 <Link
                   href="/auth?type=login"
-                  className="hover:text-gray-600 transition-colors"
+                  className="text-lg hover:text-neon transition-transform transform hover:scale-105"
                 >
                   Login/Signup
                 </Link>
