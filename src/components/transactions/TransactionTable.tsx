@@ -7,6 +7,7 @@ import {
 import { toast } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { CustomModal } from "../common/CustomModal";
 import TransactionFilterComponent from "./TransactionFilter";
 
@@ -24,6 +25,7 @@ interface Transaction {
 type IPropType = { setMode: React.Dispatch<React.SetStateAction<string>> };
 
 export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
+  const searchParams = useSearchParams();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [total, setTotal] = useState(0);
   const [selectedTransaction, setSelectedTransaction] =
@@ -32,6 +34,8 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
     page: 1,
     pageSize: 50,
     search: "",
+    transactionType:
+      (searchParams.get("transactionType") as "DEBIT" | "CREDIT" | "") || "",
   });
 
   const fetchTransactions = useCallback(async () => {
@@ -71,7 +75,6 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
     if (!value.startDate) delete value.startDate;
     if (!value.endDate) delete value.endDate;
     if (!value.status) delete value.status;
-    console.log(value,"___filters ____")
     setFilter((prev) => ({ ...prev, ...value }));
   }, []);
 

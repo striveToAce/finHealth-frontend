@@ -20,7 +20,7 @@ export const TrackContent: React.FC = () => {
           recentActivity="2024-10-06 12:30 PM"
           bgColor="bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700"
           cardClick={() => {
-            router.push("/transactions");
+            router.push("/transactions?transactionType=DEBIT");
           }}
         />
         <TrackCard
@@ -52,7 +52,7 @@ export const TrackContent: React.FC = () => {
           recentActivity="2024-10-06 09:30 AM"
           bgColor="bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700"
           cardClick={() => {
-            router.push("/transactions");
+            router.push("/transactions?transactionType=CREDIT");
           }}
         />
         <TrackCard

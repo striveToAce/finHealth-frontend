@@ -103,7 +103,6 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
           {isFiltersOpen ? "Hide Filters" : "Show Filters"}
         </button>
       </div>
-
       {/* Filters Section */}
       {isFiltersOpen && (
         <div className="space-y-4">
