@@ -1,8 +1,13 @@
 "use client";
 
-import { getAllTransactionsService } from "@/services/transactionService";
+import {
+  getAllTransactionService,
+  getAllTransactionsService,
+} from "@/services/transactionService";
 import { toast } from "react-toastify";
+import { AnimatePresence } from "framer-motion";
 import React, { useCallback, useEffect, useState } from "react";
+import { CustomModal } from "../common/CustomModal";
 
 interface Transaction {
   id: string;
@@ -10,6 +15,8 @@ interface Transaction {
   amount: number;
   isCredit: boolean;
   createdAt: string;
+  label?: string;
+  description?: string;
   status: "PENDING" | "COMPLETED" | "FAILED";
 }
 
@@ -18,6 +25,8 @@ type IPropType = { setMode: React.Dispatch<React.SetStateAction<string>> };
 export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [total, setTotal] = useState(0);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
   const [filter, setFilter] = useState<ITransactionListPayload>({
     page: 1,
     pageSize: 50,
@@ -36,6 +45,19 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
     } catch (err) {
       toast.dismiss();
       toast.error("fetching transactions failed.");
+    }
+  }, []);
+
+  const handleTransactionClick = useCallback(async (id: string) => {
+    try {
+      toast.loading("fetching transaction detail...");
+      const data = await getAllTransactionService(id);
+      toast.dismiss();
+      toast.success("fetched transaction detail :)");
+      setSelectedTransaction(data);
+    } catch (err) {
+      toast.dismiss();
+      toast.error("fetching transaction detail failed.");
     }
   }, []);
 
@@ -81,8 +103,11 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
                 className={`${
                   index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"
                 } hover:bg-gray-600`}
+                onClick={() => handleTransactionClick(transaction.id)}
               >
-                <td className="px-4 py-2 text-lg font-medium">{index + 1}</td>
+                <td className="px-4 py-2 text-lg font-medium">
+                  {transaction.id}
+                </td>
                 <td className="px-4 py-2 text-lg">{transaction.title}</td>
                 <td
                   className={`px-4 py-2 text-lg font-bold ${
@@ -112,6 +137,40 @@ export const TransactionTable: React.FC<IPropType> = ({ setMode }) => {
           </tbody>
         </table>
       </div>
+      <AnimatePresence>
+        {selectedTransaction && (
+          <CustomModal
+            isOpen={!!selectedTransaction}
+            onClose={() => setSelectedTransaction(null)}
+            title={selectedTransaction?.title}
+          >
+            {selectedTransaction && (
+              <div>
+                <p className="text-lg text-gray-300 mb-2">
+                  <strong>Description:</strong>{" "}
+                  {selectedTransaction.description}
+                </p>
+                <p className="text-lg text-gray-300 mb-4">
+                  <strong>Label:</strong> {selectedTransaction.label}
+                </p>
+                <p className="text-lg text-gray-300">
+                  <strong>Amount:</strong>{" "}
+                  <span
+                    className={`font-bold ${
+                      selectedTransaction.isCredit
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }`}
+                  >
+                    {selectedTransaction.isCredit ? "+" : "-"}$
+                    {selectedTransaction.amount}
+                  </span>
+                </p>
+              </div>
+            )}
+          </CustomModal>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
