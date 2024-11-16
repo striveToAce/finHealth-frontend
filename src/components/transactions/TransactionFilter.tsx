@@ -18,6 +18,7 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
     status: undefined,
     sortBy: "",
   });
+  console.log(filters,"---filters____")
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(
     filters.search
   );
@@ -51,13 +52,14 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
   };
 
   const handleClearFilters = () => {
-    const clearedFilters = {
+    const clearedFilters:ITransactionFilterPayload = {
       search: "",
       startDate: "",
       endDate: "",
-      status: undefined,
+      status: "",
       sortBy: "",
     };
+    console.log(clearedFilters,"__{}{}{}_")
     setFilters(clearedFilters);
     onFilterChange(clearedFilters);
   };
@@ -148,11 +150,11 @@ const TransactionFilterComponent: React.FC<FilterProps> = ({
                       | "COMPLETED"
                       | "PENDING"
                       | "FAILED"
-                      | undefined
+                      | ""
                   )
                 }
               >
-                <option value={undefined}>All</option>
+                <option value={""}>All</option>
                 <option value="PENDING">Pending</option>
                 <option value="COMPLETED">Completed</option>
                 <option value="FAILED">Failed</option>

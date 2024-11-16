@@ -5,7 +5,7 @@ interface TransactionFormValues {
   amount: number;
   isCredit: boolean;
   label: string;
-  status: "PENDING" | "COMPLETED" | "FAILED";
+  status: "PENDING" | "COMPLETED" | "FAILED" | "";
   reason?: string;
 }
 
@@ -15,13 +15,13 @@ interface ITransactionListPayload {
   pageSize: number;
   startDate?: string;
   endDate?: string;
-  status?: "PENDING" | "COMPLETED" | "FAILED";
+  status?: "PENDING" | "COMPLETED" | "FAILED" | "";
   sortBy?: string;
 }
 interface ITransactionFilterPayload {
     search: string;
     startDate?: string;
     endDate?: string;
-    status?: "PENDING" | "COMPLETED" | "FAILED";
+    status?: "PENDING" | "COMPLETED" | "FAILED" | "";
     sortBy?: string;
   }
