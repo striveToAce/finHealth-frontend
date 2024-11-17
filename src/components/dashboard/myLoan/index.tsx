@@ -1,17 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { TransactionTable } from "./TransactionTable";
-import TransactionForm from "./TransactionForm";
+import { MyLoanTable } from "./MyLoanTable";
+import LoanForm from "./MyLoanForm";
 
 export const TransactionView = () => {
   const [mode, setMode] = useState<string>("list");
   return (
     <div>
       {mode === "list" ? (
-        <TransactionTable setMode={setMode} />
+        <MyLoanTable setMode={setMode} />
       ) : (
-        <TransactionForm setMode={setMode} />
+        <LoanForm setMode={setMode} />
       )}
     </div>
   );

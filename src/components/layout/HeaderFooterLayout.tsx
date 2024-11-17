@@ -13,7 +13,7 @@ interface WrapperProps {
 const HeaderFooterLayout: React.FC<WrapperProps> = ({ children }) => {
   return (
     <Provider store={store}>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen bg-gradient-to-r from-purple-600 to-blue-800 flex flex-col">
         <Header />
         <main className="flex-grow container mx-auto pt-16 pb-8">
           {children}
