@@ -1,6 +1,5 @@
 "use client";
 import { addUpdateLoanService } from "@/services/loanService";
-import { makeTransactionService } from "@/services/transactionService";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 
@@ -159,6 +158,26 @@ const LoanForm: React.FC<IPropType> = ({ setMode }) => {
                 />
                 <ErrorMessage
                   name="emiQty"
+                  component="div"
+                  className="text-red-400 text-sm"
+                />
+              </div>
+              {/* Label */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-purple-300"
+                  htmlFor="label"
+                >
+                  Label
+                </label>
+                <Field
+                  type="text"
+                  name="label"
+                  id="label"
+                  className="mt-1 w-full bg-gray-800 text-purple-200 border border-gray-600 rounded-lg px-4 py-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+                <ErrorMessage
+                  name="label"
                   component="div"
                   className="text-red-400 text-sm"
                 />

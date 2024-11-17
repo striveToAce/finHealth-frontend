@@ -44,7 +44,7 @@ export const TrackContent: React.FC = () => {
           recentActivity="2024-10-06 11:00 AM"
           bgColor="bg-gradient-to-r from-red-500 via-red-600 to-red-700"
           cardClick={() => {
-            router.push("/transactions");
+            router.push("/dashboard/myloans");
           }}
         />
         <TrackCard

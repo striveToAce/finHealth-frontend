@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MyLoanTable } from "./MyLoanTable";
 import LoanForm from "./MyLoanForm";
 
-export const TransactionView = () => {
+export const LoanView = () => {
   const [mode, setMode] = useState<string>("list");
   return (
     <div>
