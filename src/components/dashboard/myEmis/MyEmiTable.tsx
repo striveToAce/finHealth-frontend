@@ -16,7 +16,6 @@ interface Emi {
   loanInfo: any;
   status: "PENDING" | "COMPLETED" | "FAILED" | "";
 }
-//type IPropType = { setMode: React.Dispatch<React.SetStateAction<string>> };
 
 export const MyEmiTable: React.FC = () => {
   const [emis, setEmis] = useState<Emi[]>([]);
