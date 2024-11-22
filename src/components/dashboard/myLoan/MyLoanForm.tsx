@@ -14,6 +14,7 @@ const LoanForm: React.FC<IPropType> = ({ setMode }) => {
     status: "ACTIVE",
     lender: "",
     emiQty: 0,
+    emiAmount: 0,
   };
 
   const handleSubmit = async (values: LoanFormValues) => {
@@ -115,6 +116,27 @@ const LoanForm: React.FC<IPropType> = ({ setMode }) => {
                 />
                 <ErrorMessage
                   name="amount"
+                  component="div"
+                  className="text-red-400 text-sm"
+                />
+              </div>
+
+              {/* emi amount */}
+              <div>
+                <label
+                  className="block text-sm font-medium text-purple-300"
+                  htmlFor="emiAmount"
+                >
+                  EMI Amount
+                </label>
+                <Field
+                  type="number"
+                  name="emiAmount"
+                  id="emiAmount"
+                  className="mt-1 w-full bg-gray-800 text-purple-200 border border-gray-600 rounded-lg px-4 py-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+                <ErrorMessage
+                  name="emiAmount"
                   component="div"
                   className="text-red-400 text-sm"
                 />

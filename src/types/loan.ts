@@ -8,6 +8,7 @@ interface LoanFormValues {
   label: string;
   status: "ACTIVE" | "CLOSED" | "";
   reason?: string;
+  emiAmount:number;
 }
 
 interface ILoanListPayload {
@@ -25,4 +26,14 @@ interface ILoanFilterPayload {
   endDate?: string;
   status?: "ACTIVE" | "CLOSED" | "";
   sortBy?: string;
+}
+
+interface IGeneralListPayload {
+  page:number;
+  pageSize:number;
+}
+interface IPayEMI{
+  loanId:string;
+  emiId:string;
+  month:number;
 }

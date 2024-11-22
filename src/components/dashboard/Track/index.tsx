@@ -28,7 +28,7 @@ export const TrackContent: React.FC = () => {
           recentActivity="2024-10-05 03:45 PM"
           bgColor="bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700"
           cardClick={() => {
-            router.push("/transactions");
+            router.push("/dashboard/myemis");
           }}
         />
         <TrackCard
