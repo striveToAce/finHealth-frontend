@@ -141,38 +141,6 @@ export const MyEmiTable: React.FC = () => {
           </tbody>
         </table>
       </div>
-      {/* <AnimatePresence>
-        {selectedLoan && (
-          <CustomModal
-            isOpen={!!selectedLoan}
-            onClose={() => setSelectedLoan(null)}
-            title={selectedLoan?.title}
-          >
-            {selectedLoan && (
-              <div>
-                <p className="text-lg text-gray-300 mb-2">
-                  <strong>Description:</strong> {selectedLoan.description}
-                </p>
-                <p className="text-lg text-gray-300 mb-4">
-                  <strong>Label:</strong> {selectedLoan.label}
-                </p>
-                <p className="text-lg text-gray-300">
-                  <strong>Amount:</strong>{" "}
-                  <span className={`font-bold ${"text-red-400"}`}>
-                    {"-"}${selectedLoan.amount}
-                  </span>
-                </p>
-                <p className="text-lg text-gray-300 mb-4">
-                  <strong>Lender:</strong> {selectedLoan.lender}
-                </p>
-                <p className="text-xl text-gray-300 mb-4">
-                  <strong>EMIs remaining:</strong> {selectedLoan.emiQty}
-                </p>
-              </div>
-            )}
-          </CustomModal>
-        )}
-      </AnimatePresence> */}
     </div>
   );
 };
