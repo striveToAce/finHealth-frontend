@@ -20,7 +20,6 @@ interface Emi {
 export const MyEmiTable: React.FC = () => {
   const [emis, setEmis] = useState<Emi[]>([]);
   const [total, setTotal] = useState(0);
-  //   const [selected, setSelectedLoan] = useState<Loan | null>(null);
   const [filter, setFilter] = useState<IGeneralListPayload>({
     page: 1,
     pageSize: 50,
